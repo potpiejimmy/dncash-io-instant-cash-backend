@@ -1,0 +1,20 @@
+{
+  "name": "dncash-io-instant-cash-backend",
+  "version": "0.0.1",
+  "description": "Instant Cash backend - powered by dncash.io",
+  "main": "app.ts",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "ssh://git@tom.wincor-nixdorf.com:7999/bcsdm/dncash-io-instant-cash-backend.git"
+  },
+  "keywords": [
+    "dncash.io",
+    "Instant",
+    "Cash"
+  ],
+  "author": "Thorsten Liese",
+  "license": "ISC"
+}
