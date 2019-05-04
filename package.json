@@ -4,6 +4,10 @@
   "description": "Instant Cash backend - powered by dncash.io",
   "main": "app.ts",
   "scripts": {
+    "start": "node dist/app.js",
+    "develop": "tsc && concurrently \"tsc -w\" \"nodemon dist/app.js\"",
+    "build": "tsc",
+    "postinstall": "tsc",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -16,5 +20,16 @@
     "Cash"
   ],
   "author": "Thorsten Liese",
-  "license": "ISC"
+  "license": "ISC",
+  "devDependencies": {
+    "@types/node": "^12.0.0",
+    "concurrently": "^4.1.0",
+    "typescript": "^3.4.5"
+  },
+  "dependencies": {
+    "body-parser": "^1.19.0",
+    "braintree": "^2.16.0",
+    "express": "^4.16.4",
+    "nocache": "^2.0.0"
+  }
 }
