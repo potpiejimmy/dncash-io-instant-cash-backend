@@ -1,11 +1,25 @@
+/**
+ * Set the following environment variables:
+ * 
+ * BRAINTREE_MERCHANT_ID
+ * BRAINTREE_PUBLIC_KEY
+ * BRAINTREE_PRIVATE_KEY
+ * DNCASH_API_KEY
+ * DNCASH_API_SECRET
+ * DNCASH_API_URL
+ */
+
 import * as express from 'express';
 import { json } from 'body-parser';
 import * as nocache from 'nocache';
-import * as braintree from 'braintree';
+import * as Braintree from './business/braintree';
 
 console.log("Setting up Express");
 
 const app: express.Application = express();
+
+// Routes:
+import { instantApiV1 } from "./routes/instantapi.v1";
 
 app.use(nocache());
 app.use(json());
@@ -21,14 +35,8 @@ app.use(function(req, res, next) {
 
 app.get('/', (req, res) => res.send('dncash.io Instant Cash backend is running.'));
 
-/**
- * Return a client authorization token
- */
-app.get('/clientToken', (req, res) => {
-    gateway.clientToken.generate({}, (err, response) => {
-        res.send({token:response.clientToken});
-    });
-});
+// Routes:
+app.use("/instant/v1", instantApiV1);
 
 // production error handler
 // no stacktrace leaked to user
@@ -44,12 +52,7 @@ app.use(function(err: any, req: express.Request, res: express.Response, next: ex
 });
 
 console.log("Connecting to Braintree Gateway");
-let gateway = braintree.connect({
-    environment: braintree.Environment.Sandbox,
-    merchantId: process.env.BRAINTREE_MERCHANT_ID,
-    publicKey:  process.env.BRAINTREE_PUBLIC_KEY,
-    privateKey: process.env.BRAINTREE_PRIVATE_KEY
-});
+Braintree.connectGateway();
 
 console.log("Server initialized successfully");
 
