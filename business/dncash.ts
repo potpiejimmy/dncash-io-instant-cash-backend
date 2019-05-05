@@ -38,6 +38,21 @@ export async function deleteTokenForDevice(device_uuid: string, token_uid: strin
     return invokeBackend("/dnapi/token/v1/tokens/"+token_uid+"?device_uuid="+device_uuid, "DELETE");
 }
 
+export async function performCashout(triggerData: any): Promise<any> {
+    let res = await fetch(process.env.DNCASH_API_URL + "/dnapi/mobile/v1/trigger", {
+        headers: {"Content-Type": "application/json"},
+        method: "POST",
+        body: JSON.stringify(triggerData)
+    });
+    console.log(res);
+    let status = "OK" // XXX
+    if (res.status != 204) {
+        let resBody = await res.json();
+        if (resBody.error) status = resBody.message;
+    }
+    return {status: status};
+}
+
 function invokeBackend(url: string, method: string = "GET", body?: any) : Promise<any> {
     return fetch(process.env.DNCASH_API_URL + url, {
         headers: {

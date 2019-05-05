@@ -39,3 +39,12 @@ instantApiV1.delete('/tokens/:device_uuid/:uid', function (request: Request, res
     .then(res => response.json(res))
     .catch(err => next(err));
 });
+
+/**
+ * Trigger token cashout
+ */
+instantApiV1.post('/trigger', function (request: Request, response: Response, next: NextFunction) {
+    Dncash.performCashout(request.body)
+    .then(res => response.json(res))
+    .catch(err => next(err));
+});
