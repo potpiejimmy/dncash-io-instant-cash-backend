@@ -58,7 +58,7 @@ console.log("Server initialized successfully");
 
 export let appReady = new Promise(resolve => {
     // listen:
-    let port = process.env.PORT || 3000;
+    let port = process.env.PORT || 3001;
     app.listen(port, () => {
         console.log('Instant Cash backend is up and running, listening on port ' + port)
         resolve();

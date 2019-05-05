@@ -3,7 +3,7 @@ import * as Braintree from './braintree';
 
 export async function registerDevice(device: any): Promise<any> {
     console.log(JSON.stringify(device));
-    let d = await invokeBackend(process.env.DNCASH_API_URL+"/dnapi/token/v1/devices", "POST", device);
+    let d = await invokeBackend("/dnapi/token/v1/devices", "POST", device);
     // add the braintree authorization token for convenience
     d.braintree_auth = await Braintree.generateClientToken();
     return d;
@@ -27,16 +27,25 @@ export async function buyToken(token: any): Promise<any> {
     };
     delete token.paymentMethodNonce;
     console.log(JSON.stringify(token));
-    return invokeBackend(process.env.DNCASH_API_URL+"/dnapi/token/v1/tokens", "POST", token)
+    return invokeBackend("/dnapi/token/v1/tokens", "POST", token)
 }
 
-function invokeBackend(url: string, method: string, body?: any) : Promise<any> {
-    return fetch(url, {
+export async function getTokensForDevice(device_uuid: string): Promise<any> {
+    return invokeBackend("/dnapi/token/v1/tokens?device_uuid="+device_uuid);
+}
+
+export async function deleteTokenForDevice(device_uuid: string, token_uid: string): Promise<any> {
+    return invokeBackend("/dnapi/token/v1/tokens/"+token_uid+"?device_uuid="+device_uuid, "DELETE");
+}
+
+function invokeBackend(url: string, method: string = "GET", body?: any) : Promise<any> {
+    return fetch(process.env.DNCASH_API_URL + url, {
         headers: {
             "DN-API-KEY": process.env.DNCASH_API_KEY,
             "DN-API-SECRET": process.env.DNCASH_API_SECRET,
             "Content-Type": "application/json"
         },
-        method: method
-    }, JSON.stringify(body)).then(res => res.json());
+        method: method,
+        body: body ? JSON.stringify(body) : null
+    }).then(res => res.json());
 }
