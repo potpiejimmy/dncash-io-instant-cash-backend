@@ -1,6 +1,6 @@
 {
   "name": "dncash-io-instant-cash-backend",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Instant Cash backend - powered by dncash.io",
   "main": "app.ts",
   "scripts": {

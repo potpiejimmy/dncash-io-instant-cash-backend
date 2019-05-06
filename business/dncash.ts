@@ -116,7 +116,7 @@ export async function performCashout(triggerData: any): Promise<any> {
         PubSub.unsubscribe(triggerData.uuid);
     }
 
-    return {success:true, status: tokenState};
+    return {success: tokenState=='COMPLETED', status: tokenState};
 }
 
 function invokeBackend(url: string, method: string = "GET", body?: any) : Promise<any> {
