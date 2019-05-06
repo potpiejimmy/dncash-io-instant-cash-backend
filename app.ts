@@ -13,6 +13,7 @@ import * as express from 'express';
 import { json } from 'body-parser';
 import * as nocache from 'nocache';
 import * as Braintree from './business/braintree';
+import * as Dncash from './business/dncash';
 
 console.log("Setting up Express");
 
@@ -53,6 +54,9 @@ app.use(function(err: any, req: express.Request, res: express.Response, next: ex
 
 console.log("Connecting to Braintree Gateway");
 Braintree.connectGateway();
+
+console.log("Connecting dncash.io");
+Dncash.connectDncashIo();
 
 console.log("Server initialized successfully");
 
