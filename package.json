@@ -8,6 +8,7 @@
     "develop": "tsc && concurrently \"tsc -w\" \"nodemon dist/app.js\"",
     "build": "tsc",
     "postinstall": "tsc",
+    "deploy": "tsc && node dist/awsdeploy.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
