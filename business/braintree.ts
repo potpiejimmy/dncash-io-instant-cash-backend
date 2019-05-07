@@ -23,6 +23,6 @@ export async function sale(amount: number, nonceFromTheClient): Promise<any> {
             submitForSettlement: true
         }
     });
-    console.log("Transaction: " + result.transaction.id + ", " + result.transaction.status);
+    if (result.success) console.log("Transaction: " + result.transaction.id + ", " + result.transaction.status);
     return result;
 }

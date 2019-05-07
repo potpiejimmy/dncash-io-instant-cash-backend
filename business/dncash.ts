@@ -51,19 +51,24 @@ export async function registerDevice(device: any): Promise<any> {
 export async function buyToken(token: any): Promise<any> {
 
     // first, pay the amount:
-    let paymentResult = await Braintree.sale(token.amount / 100, token.paymentMethodNonce);
-    console.log("Payment: success=" + paymentResult.success);
-    if (!paymentResult.success) throw "Payment unsuccessful";
+    let paymentResult;
+    if (token.paymentMethodNonce) { // XXX demo, no nonce, no pay
+        paymentResult = await Braintree.sale(token.amount / 100, token.paymentMethodNonce);
+        console.log("Payment: success=" + paymentResult.success);
+        if (!paymentResult.success) throw "Payment unsuccessful";
+    }
 
     // create the token:
     token.type = 'CASHOUT';
-    token.refname = paymentResult.transaction.id;
-    token.info.paymentInfo = {
-        transaction: {
-            id: paymentResult.transaction.id,
-            status: paymentResult.transaction.status
-        }
-    };
+    if (paymentResult) {
+        token.refname = paymentResult.transaction.id;
+        token.info.paymentInfo = {
+            transaction: {
+                id: paymentResult.transaction.id,
+                status: paymentResult.transaction.status
+            }
+        };
+    }
     delete token.paymentMethodNonce;
     return invokeBackend("/dnapi/token/v1/tokens", "POST", token)
 }
